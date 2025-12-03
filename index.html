@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aplikasi Premium Murah | Netflix, YouTube, Canva Pro | WA: 6282384446561</title>
 
+  <!-- Tailwind config: dark mode via class -->
+  <script>
+    tailwind = {
+      config: {
+        darkMode: 'class'
+      }
+    };
+  </script>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- AUTO DARK MODE: ikut tema sistem -->
+  <script>
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+
   <!-- SEO META -->
   <meta name="description" content="Jual akun premium murah: YouTube Premium, Netflix, Canva Pro, CapCut Pro, Spotify, Disney+, HBO, Viu, Google Drive. Harga pelajar! Order WA 6282384446561.">
   <meta name="keywords" content="YouTube Premium murah, Netflix murah, Canva Pro murah, CapCut Pro, Spotify premium, jual akun premium, aplikasi premium murah">
@@ -15,7 +33,7 @@
   <meta property="og:description" content="Layanan aplikasi premium murah. Order via WhatsApp.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://i.ibb.co/0K70G8G/premium.jpg">
-  <meta property="og:url" content="https://premium-apps.id/">
+  <meta property="og:url" content="https://rifatfurozan29-png.github.io/landingpage-aplikasi-premium/">
 
   <!-- TWITTER CARD -->
   <meta name="twitter:card" content="summary_large_image">
@@ -24,10 +42,7 @@
   <meta name="twitter:image" content="https://i.ibb.co/0K70G8G/premium.jpg">
 
   <!-- CANONICAL -->
-  <link rel="canonical" href="https://premium-apps.id/" />
-
-  <!-- TAILWIND CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="canonical" href="https://rifatfurozan29-png.github.io/landingpage-aplikasi-premium/" />
 
   <!-- AOS CSS (Animasi Scroll) -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
@@ -44,13 +59,12 @@
       "@type": "PostalAddress",
       "addressLocality": "Indonesia"
     },
-    "url": "https://premium-apps.id"
+    "url": "https://rifatfurozan29-png.github.io/landingpage-aplikasi-premium/"
   }
   </script>
 
-  <!-- DARK MODE OTOMATIS (mengikuti sistem) -->
+  <!-- Transisi halus saat tema berganti -->
   <style>
-    /* Smooth transition saat ganti tema */
     body, section, nav, footer, div {
       transition: background-color 0.3s ease, color 0.3s ease;
     }
@@ -80,7 +94,7 @@
       <a href="#contact" class="hover:text-purple-600 dark:hover:text-purple-300">Kontak</a>
     </div>
 
-    <!-- Mobile Menu (simple) -->
+    <!-- Mobile shortcut -->
     <a href="#apps" class="md:hidden text-sm px-3 py-1 rounded-full border border-purple-500 text-purple-600 dark:text-purple-300">
       Menu
     </a>
@@ -191,7 +205,7 @@
     <div class="bg-white dark:bg-slate-800 p-5 md:p-6 rounded-xl shadow hover:shadow-xl transition"
          data-aos="fade-up" data-aos-delay="200">
       <img loading="lazy"
-           src="https://seeklogo.com/images/C/capcut-logo-CC7D33B9E5-seeklogo.com.png"
+           src="https://upload.wikimedia.org/wikipedia/commons/7/78/Capcut-logo.png"
            class="h-12 md:h-16 mx-auto mb-4" alt="CapCut Pro">
 
       <h3 class="text-lg md:text-xl font-bold text-center">CapCut Pro</h3>
@@ -253,11 +267,11 @@
       </a>
     </div>
 
-    <!-- HBO -->
+    <!-- HBO (Max) -->
     <div class="bg-white dark:bg-slate-800 p-5 md:p-6 rounded-xl shadow hover:shadow-xl transition"
          data-aos="fade-up" data-aos-delay="350">
       <img loading="lazy"
-           src="https://upload.wikimedia.org/wikipedia/commons/5/5a/HBO_logo.svg"
+           src="https://upload.wikimedia.org/wikipedia/commons/1/17/HBO_Max_Logo.svg"
            class="h-12 md:h-16 mx-auto mb-4" alt="HBO GO">
 
       <h3 class="text-lg md:text-xl font-bold text-center">HBO GO</h3>
@@ -446,6 +460,60 @@
     duration: 800,
     offset: 80
   });
+</script>
+
+<!-- FIREBASE (REALTIME TRACKING) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script>
+  // TODO: ganti dengan config Firebase punyamu sendiri
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  const db = firebase.database();
+
+  // Tracking pengunjung
+  (function trackVisitor() {
+    const device = navigator.userAgent;
+    const page = window.location.pathname;
+    const time = new Date().toISOString();
+
+    // Ambil lokasi via ipapi (opsional)
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const visitor = {
+          time: time,
+          city: data.city || "Unknown",
+          country: data.country_name || "Unknown",
+          ip: data.ip || "Hidden",
+          device: device,
+          page: page
+        };
+        db.ref("visitors").push(visitor);
+      })
+      .catch(() => {
+        const visitor = {
+          time: time,
+          city: "Unknown",
+          country: "Unknown",
+          ip: "Hidden",
+          device: device,
+          page: page
+        };
+        db.ref("visitors").push(visitor);
+      });
+  })();
 </script>
 
 </body>
